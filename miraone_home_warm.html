@@ -52,7 +52,12 @@
   </style>
 </head>
 <body>
-
+<script>
+  const synth = window.speechSynthesis;
+  const utter = new SpeechSynthesisUtterance("テストです。聞こえていますか？");
+  utter.lang = 'ja-JP';
+  synth.speak(utter);
+</script>
   <h1>Miraone</h1>
   <p>君が灯る場所へようこそ</p>
 
