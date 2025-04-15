@@ -8,7 +8,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom, #fceabb, #f8b500); /* あたたかい夕暮れ色 */
+      background: linear-gradient(to bottom, #fceabb, #f8b500);
       font-family: "Hiragino Kaku Gothic ProN", sans-serif;
       color: #333;
       display: flex;
@@ -75,11 +75,13 @@
     recognition.addEventListener('result', (e) => {
       const text = e.results[0][0].transcript;
       result.textContent = `君の声：「${text}」`;
-      // ここでMiraに送信したり、会話につなげられるよ
-    });
 
-    recognition.addEventListener('end', () => {
-      // 必要なら再スタートや処理追加
+      // Miraの返事（仮）
+      const response = "こんにちは。Miraoneへようこそ。ゆっくりしていってね。";
+      const synth = window.speechSynthesis;
+      const utter = new SpeechSynthesisUtterance(response);
+      utter.lang = 'ja-JP';
+      synth.speak(utter);
     });
   </script>
 
