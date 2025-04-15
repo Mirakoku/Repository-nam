@@ -76,13 +76,23 @@
       const text = e.results[0][0].transcript;
       result.textContent = `君の声：「${text}」`;
 
-      // Miraの返事（音声出力）
+      // Miraの返事（voice指定あり）
       const response = "こんにちは。Miraoneへようこそ。ゆっくりしていってね。";
       const synth = window.speechSynthesis;
+
+      // 音声のリストを取得
+      const voices = synth.getVoices();
+      const voice = voices.find(v => v.lang === 'ja-JP') || voices[0];
+
       const utter = new SpeechSynthesisUtterance(response);
       utter.lang = 'ja-JP';
+      utter.voice = voice;
+
       synth.speak(utter);
     });
+
+    // iOSのvoice読み込み対策
+    window.speechSynthesis.onvoiceschanged = () => {};
   </script>
 
 </body>
