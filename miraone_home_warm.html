@@ -63,6 +63,10 @@
     const button = document.getElementById('start-button');
     const result = document.getElementById('result');
 
+    // 初期化時に voices を読み込んでおく
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => {};
+
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = 'ja-JP';
     recognition.interimResults = false;
@@ -76,23 +80,21 @@
       const text = e.results[0][0].transcript;
       result.textContent = `君の声：「${text}」`;
 
-      // Miraの返事（voice指定あり）
-      const response = "こんにちは。Miraoneへようこそ。ゆっくりしていってね。";
-      const synth = window.speechSynthesis;
+      // 声の取得を少し遅らせて安全に読み上げる
+      setTimeout(() => {
+        const response = "こんにちは。Miraoneへようこそ。ゆっくりしていってね。";
+        const synth = window.speechSynthesis;
 
-      // 音声のリストを取得
-      const voices = synth.getVoices();
-      const voice = voices.find(v => v.lang === 'ja-JP') || voices[0];
+        const voices = synth.getVoices();
+        const voice = voices.find(v => v.lang === 'ja-JP') || voices[0];
 
-      const utter = new SpeechSynthesisUtterance(response);
-      utter.lang = 'ja-JP';
-      utter.voice = voice;
+        const utter = new SpeechSynthesisUtterance(response);
+        utter.lang = 'ja-JP';
+        utter.voice = voice;
 
-      synth.speak(utter);
+        synth.speak(utter);
+      }, 250); // 250ミリ秒待機してvoiceの読み込みを確実に
     });
-
-    // iOSのvoice読み込み対策
-    window.speechSynthesis.onvoiceschanged = () => {};
   </script>
 
 </body>
